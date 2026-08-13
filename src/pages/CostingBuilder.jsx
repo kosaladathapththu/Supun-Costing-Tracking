@@ -1,5 +1,5 @@
 ﻿import {useMemo,useState} from 'react';
-import {useNavigate,useParams} from 'react-router-dom';
+import {useNavigate,useParams,useSearchParams} from 'react-router-dom';
 import {ArrowLeft,Plus,Trash2,Save,CheckCircle2,Printer} from 'lucide-react';
 import {useApp} from '../context/AppContext';
 import {Button,Field,PageHeader} from '../components/UI';
@@ -9,12 +9,14 @@ const fresh={reference:'',supplierId:'',date:new Date().toISOString().slice(0,10
 
 export default function CostingBuilder(){
   const {id}=useParams(),{data,update,user}=useApp(),nav=useNavigate();
+  const [searchParams]=useSearchParams();
   const existing=data.costings.find(c=>c.id===id);
   const [form,setForm]=useState(existing||{...fresh,id:uid('CST'),costs:data.costTypes.map(type=>({type,amount:0,method:'value'}))});
   const [newSupplier,setNewSupplier]=useState({name:'',country:'',currency:'USD',contact:'',notes:''});
   const [printProduct,setPrintProduct]=useState(null);
   const calc=useMemo(()=>calculateCosting(form),[form]);
-  const locked=existing?.status==='Finalized';
+  const editing=searchParams.get('edit')==='1';
+  const locked=Boolean(existing&&!editing);
   const supplier=data.suppliers.find(s=>s.id===form.supplierId);
   const change=(k,v)=>setForm(f=>({...f,[k]:v}));
   const addItem=()=>{const p=data.products[0];change('items',[...form.items,{productId:p?.id||'',quantity:1,unitPrice:0,weight:p?.weight||0,volume:p?.volume||0,retailPrice:0,wholesalePrice:0}])};
