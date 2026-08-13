@@ -1,6 +1,6 @@
 import {useMemo,useState} from 'react';
 import {useSearchParams} from 'react-router-dom';
-import {Calculator,Package,Plus,Trash2} from 'lucide-react';
+import {Calculator,Eye,Package,Plus,Printer,Trash2} from 'lucide-react';
 import {useApp} from '../context/AppContext';
 import {Badge,Button,Field,Modal,PageHeader,SearchBox} from '../components/UI';
 import {calculateCosting,money,uid} from '../utils/calculations';
@@ -13,15 +13,17 @@ export default function Products(){
   const [searchParams,setSearchParams]=useSearchParams();
   const [q,setQ]=useState('');
   const [modal,setModal]=useState(()=>searchParams.get('add')==='1');
+  const [viewProduct,setViewProduct]=useState(null);
   const nextCode=()=>`SGP-${String(data.products.length+1).padStart(5,'0')}`;
   const makeBlank=()=>({code:nextCode(),name:'',category:data.categories[0]||'',type:'Finished Product',weight:'',volume:'',status:'Active',supplierId:'',newSupplier:false,supplierName:'',supplierCountry:'',supplierCurrency:'USD',quantity:'',unitPrice:'',retailPrice:'',wholesalePrice:'',currency:'LKR',exchangeRate:'',date:'',invoice:'',reference:'',costingStatus:'Draft',notes:'',costs:data.costTypes.map(type=>({type,amount:'',method:'value'}))});
   const [form,setForm]=useState(makeBlank);
   const preview=useMemo(()=>calculateCosting({items:[{productId:'preview',quantity:form.quantity,unitPrice:form.unitPrice,weight:form.weight,volume:form.volume,retailPrice:form.retailPrice,wholesalePrice:form.wholesalePrice}],costs:form.costs}),[form]);
   const result=preview.items[0];
-  const latestCosts=useMemo(()=>{const map={};data.costings.slice().sort((a,b)=>b.date.localeCompare(a.date)).forEach(c=>calculateCosting(c).items.forEach(i=>{if(!map[i.productId])map[i.productId]=i}));return map},[data.costings]);
+  const latestCosts=useMemo(()=>{const map={};data.costings.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).forEach(c=>{const calculated=calculateCosting(c);calculated.items.forEach(i=>{if(!map[i.productId])map[i.productId]={item:i,costing:calculated}})});return map},[data.costings]);
   const list=data.products.filter(p=>(p.name+p.code+p.category).toLowerCase().includes(q.toLowerCase()));
   const open=()=>{setForm(makeBlank());setModal(true)};
   const close=()=>{setModal(false);setSearchParams({})};
+  const printProduct=product=>{setViewProduct(product);setTimeout(()=>window.print(),80)};
   const setCost=(i,k,v)=>setForm(f=>({...f,costs:f.costs.map((x,j)=>j===i?{...x,[k]:v}:x)}));
   const addCost=()=>setForm(f=>({...f,costs:[...f.costs,{type:data.costTypes[0]||'Other',amount:'',method:'value'}]}));
   const save=e=>{e.preventDefault();const productId=uid('PRD');let supplierId=form.supplierId;if(form.newSupplier&&form.supplierName.trim()){supplierId=uid('SUP');update('suppliers',s=>[...s,{id:supplierId,name:form.supplierName,country:form.supplierCountry,currency:form.supplierCurrency,contact:'',notes:'Created during product costing'}])}const product={id:productId,code:form.code,name:form.name,category:form.category,type:form.type,weight:Number(form.weight)||0,volume:Number(form.volume)||0,status:'Active'};const costing={id:uid('CST'),reference:form.reference||`PC-${form.code}-${Date.now().toString().slice(-5)}`,supplierId,date:form.date,currency:form.currency,exchangeRate:Number(form.exchangeRate)||1,invoice:form.invoice,notes:form.notes,status:form.costingStatus,items:[{productId,quantity:Number(form.quantity)||0,unitPrice:Number(form.unitPrice)||0,weight:Number(form.weight)||0,volume:Number(form.volume)||0,retailPrice:Number(form.retailPrice)||0,wholesalePrice:Number(form.wholesalePrice)||0}],costs:form.costs.filter(c=>Number(c.amount)!==0).map(c=>({...c,amount:Number(c.amount)}))};update('products',p=>[...p,product]);update('costings',c=>[costing,...c]);update('audit',a=>[{id:uid('AUD'),user:user.name,action:`Created product ${product.code} with initial costing`,date:new Date().toISOString(),oldValue:'—',newValue:costing.status},...a]);close()};
