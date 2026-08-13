@@ -113,11 +113,11 @@ export default function Costings() {
                   <td>{c.items.length}</td>
                   <td>
                     <b>{money(c.landedTotal)}</b>
-                    <small>Purchase {money(c.purchaseTotal)}</small>
+                    <small>P: {money(c.purchaseTotal)}</small>
                   </td>
                   <td>
                     <b>{money(c.summary.retail.sales)}</b>
-                    <small>Wholesale {money(c.summary.wholesale.sales)}</small>
+                    <small>W: {money(c.summary.wholesale.sales)}</small>
                   </td>
                   <td>
                     <b>R {c.summary.retail.markup.toFixed(1)}%</b>
