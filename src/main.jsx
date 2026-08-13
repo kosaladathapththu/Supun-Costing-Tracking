@@ -6,4 +6,5 @@ import {AppProvider} from './context/AppContext';
 import './styles.css';
 import './product-details.css';
 import './custom-cost.css';
+import './layout-fixes.css';
 ReactDOM.createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><AppProvider><App/></AppProvider></BrowserRouter></React.StrictMode>);
