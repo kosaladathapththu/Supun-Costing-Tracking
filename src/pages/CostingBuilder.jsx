@@ -1,5 +1,6 @@
 ﻿import { useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { ArrowLeft, Plus, Trash2, Save, CheckCircle2, Printer } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Button, Field, PageHeader } from '../components/UI';
@@ -41,6 +42,7 @@ export default function CostingBuilder() {
   const [printProduct, setPrintProduct] = useState(null);
   const calc = useMemo(() => calculateCosting(form), [form]);
   const editing = searchParams.get('edit') === '1';
+  const printShipment = searchParams.get('print') === '1';
   const locked = Boolean(existing && !editing);
   const supplier = data.suppliers.find(s => s.id === form.supplierId);
   const change = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -66,6 +68,20 @@ export default function CostingBuilder() {
     );
   const addCost = () =>
     change('costs', [...form.costs, { type: data.costTypes[0], amount: 0, method: 'value' }]);
+
+  useEffect(() => {
+    if (!printShipment || !existing) return undefined;
+    document.body.classList.add('shipment-print-mode');
+    const timer = window.setTimeout(() => window.print(), 150);
+    const cleanup = () => document.body.classList.remove('shipment-print-mode');
+    window.addEventListener('afterprint', cleanup, { once: true });
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('afterprint', cleanup);
+      cleanup();
+    };
+  }, [existing, printShipment]);
+
   const printOne = productId => {
     setPrintProduct(productId);
     setTimeout(() => window.print(), 80);

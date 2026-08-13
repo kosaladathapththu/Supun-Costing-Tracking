@@ -1,6 +1,6 @@
 ﻿import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Plus, Printer, Trash2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Badge, Button, PageHeader, SearchBox } from '../components/UI';
 import { calculateCosting, money } from '../utils/calculations';
@@ -139,6 +139,10 @@ export default function Costings() {
                       <Button variant="secondary" onClick={() => nav(`/costings/${c.id}?edit=1`)}>
                         <Pencil size={16} />
                         Edit
+                      </Button>
+                      <Button variant="secondary" onClick={() => nav(`/costings/${c.id}?print=1`)}>
+                        <Printer size={16} />
+                        Print
                       </Button>
                       <Button variant="danger" onClick={() => remove(c)}>
                         <Trash2 size={16} />

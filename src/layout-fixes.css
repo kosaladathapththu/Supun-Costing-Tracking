@@ -239,3 +239,25 @@ body,
 .table-wrap td .negative {
   word-break: normal;
 }
+
+/* Print the complete shipment report without product-report visibility rules interfering. */
+@media print {
+  body.shipment-print-mode *,
+  body.shipment-print-mode .builder,
+  body.shipment-print-mode .print-heading,
+  body.shipment-print-mode .print-heading * {
+    visibility: visible !important;
+  }
+  body.shipment-print-mode .builder {
+    display: grid !important;
+  }
+  body.shipment-print-mode .print-heading {
+    display: block !important;
+  }
+  body.shipment-print-mode .page-header,
+  body.shipment-print-mode .back,
+  body.shipment-print-mode aside,
+  body.shipment-print-mode header {
+    display: none !important;
+  }
+}
