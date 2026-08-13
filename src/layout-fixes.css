@@ -28,9 +28,63 @@ body,
 .table-wrap {
   width: 100%;
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-inline: contain;
+  overflow: hidden;
+}
+.table-wrap table {
+  width: 100%;
+  min-width: 0 !important;
+  table-layout: fixed;
+}
+.table-wrap th,
+.table-wrap td {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  vertical-align: middle;
+}
+.table-wrap th {
+  padding: 10px 8px;
+  line-height: 1.25;
+}
+.table-wrap td {
+  padding: 12px 8px;
+  line-height: 1.35;
+}
+.product-overview-table,
+.costings-table,
+.profit-table {
+  min-width: 0 !important;
+}
+.product-overview-table th:first-child,
+.product-overview-table td:first-child {
+  width: 18%;
+}
+.product-overview-table th:last-child,
+.product-overview-table td:last-child {
+  width: 17%;
+}
+.costings-table th:first-child,
+.costings-table td:first-child {
+  width: 10%;
+}
+.costings-table th:nth-child(2),
+.costings-table td:nth-child(2) {
+  width: 14%;
+}
+.costings-table th:last-child,
+.costings-table td:last-child {
+  width: 18%;
+}
+.table-wrap .row-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+}
+.table-wrap .row-actions .btn {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 5px;
+  font-size: 11px;
 }
 .form-grid,
 .cost-row {
@@ -52,5 +106,50 @@ body,
   }
   .content {
     max-width: 100vw;
+  }
+  .table-wrap table,
+  .table-wrap thead,
+  .table-wrap tbody,
+  .table-wrap tr,
+  .table-wrap th,
+  .table-wrap td {
+    display: block;
+    width: 100% !important;
+  }
+  .table-wrap thead {
+    display: none;
+  }
+  .table-wrap tbody {
+    padding: 8px;
+  }
+  .table-wrap tbody tr {
+    margin-bottom: 10px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .table-wrap tbody tr:last-child {
+    margin-bottom: 0;
+  }
+  .table-wrap tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    text-align: right;
+    border-bottom: 1px solid #edf0ef;
+  }
+  .table-wrap tbody td:first-child {
+    display: block;
+    text-align: left;
+    background: #f7faf8;
+  }
+  .table-wrap tbody td:last-child {
+    border-bottom: 0;
+  }
+  .table-wrap .row-actions {
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
