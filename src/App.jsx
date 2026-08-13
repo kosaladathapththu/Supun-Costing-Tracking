@@ -1,4 +1,4 @@
-import {Navigate,Route,Routes} from 'react-router-dom';
+﻿import {Navigate,Route,Routes} from 'react-router-dom';
 import {useApp} from './context/AppContext';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -10,4 +10,4 @@ import CostingBuilder from './pages/CostingBuilder';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 
-export default function App(){const {user,authLoading}=useApp();if(authLoading)return <div className="app-loading"><div className="brand-mark">SG</div><p>Connecting securely...</p></div>;if(!user)return <Login/>;return <Layout><Routes><Route path="/" element={<Dashboard/>}/><Route path="/costings" element={<Costings/>}/><Route path="/costings/new" element={<Navigate to="/products?add=1" replace/>}/><Route path="/costings/:id" element={<CostingBuilder/>}/><Route path="/products" element={<Products/>}/><Route path="/pricing" element={<Navigate to="/products" replace/>}/><Route path="/reports" element={<Reports/>}/><Route path="/suppliers" element={<Suppliers/>}/><Route path="/settings" element={<Settings/>}/><Route path="*" element={<Navigate to="/"/>}/></Routes></Layout>}
+export default function App(){const {user,authLoading}=useApp();if(authLoading)return <div className="app-loading"><div className="brand-mark">SG</div><p>Connecting securely...</p></div>;if(!user)return <Login/>;return <Layout><Routes><Route path="/" element={<Dashboard/>}/><Route path="/costings" element={<Costings/>}/><Route path="/costings/new" element={<CostingBuilder/>}/><Route path="/costings/:id" element={<CostingBuilder/>}/><Route path="/products" element={<Products/>}/><Route path="/pricing" element={<Navigate to="/products" replace/>}/><Route path="/reports" element={<Reports/>}/><Route path="/suppliers" element={<Suppliers/>}/><Route path="/settings" element={<Settings/>}/><Route path="*" element={<Navigate to="/"/>}/></Routes></Layout>}
