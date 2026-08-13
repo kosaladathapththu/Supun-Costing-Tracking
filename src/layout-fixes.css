@@ -1,10 +1,56 @@
-html,body,#root{max-width:100%;overflow-x:hidden}
-.shell{width:100%;max-width:100vw;overflow-x:hidden}
-.shell main{min-width:0;max-width:calc(100vw - 250px);overflow-x:hidden}
-.content{width:100%;min-width:0;overflow-x:hidden}
-.card,.builder,.section{min-width:0;max-width:100%}
-.table-wrap{width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain}
-.form-grid,.cost-row{min-width:0}
-.form-grid>*{min-width:0}
-.field input,.field select,.field textarea{max-width:100%;min-width:0;width:100%}
-@media(max-width:760px){.shell main{max-width:100vw}.content{max-width:100vw}}
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.shell {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+.shell main {
+  min-width: 0;
+  max-width: calc(100vw - 250px);
+  overflow-x: hidden;
+}
+.content {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+.card,
+.builder,
+.section {
+  min-width: 0;
+  max-width: 100%;
+}
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+}
+.form-grid,
+.cost-row {
+  min-width: 0;
+}
+.form-grid > * {
+  min-width: 0;
+}
+.field input,
+.field select,
+.field textarea {
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+}
+@media (max-width: 760px) {
+  .shell main {
+    max-width: 100vw;
+  }
+  .content {
+    max-width: 100vw;
+  }
+}

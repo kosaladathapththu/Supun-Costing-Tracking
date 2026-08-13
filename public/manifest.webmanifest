@@ -1,1 +1,9 @@
-{"name":"Supun Group Costing","short_name":"Supun Costing","start_url":"/","display":"standalone","background_color":"#f5f7f6","theme_color":"#14362d","icons":[{"src":"/favicon.svg","sizes":"any","type":"image/svg+xml"}]}
+{
+  "name": "Supun Group Costing",
+  "short_name": "Supun Costing",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7f6",
+  "theme_color": "#14362d",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

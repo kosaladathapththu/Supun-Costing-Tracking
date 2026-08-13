@@ -1,9 +1,70 @@
-﻿import {createContext,useContext,useEffect,useMemo,useState} from 'react';
-import {onAuthStateChanged,signInWithEmailAndPassword,signOut} from 'firebase/auth';
-import {seed} from '../data/seed';
-import {auth,firebaseEnabled} from '../services/firebase';
-const C=createContext(),KEY='supun-costing-data-v1';
-const productCategories=['Refrigerators','Fans','Cookers','Air Conditioners','Washing Machines','Small Appliances','Other'];
-const migrate=data=>{const legacy=['Body Parts','Spare Parts','Accessories','Components'];const categories=data.categories||[];return categories.some(x=>legacy.includes(x))?{...data,categories:[...productCategories,...categories.filter(x=>!legacy.includes(x))]}:data};
-const profile=u=>({uid:u.uid,name:(u.displayName||u.email?.split('@')[0]||'User').replace(/[._]/g,' '),email:u.email,role:'CFO / Admin'});
-export function AppProvider({children}){const [data,setData]=useState(()=>{try{return migrate(JSON.parse(localStorage.getItem(KEY))||seed)}catch{return seed}});const [user,setUser]=useState(null);const [authLoading,setAuthLoading]=useState(firebaseEnabled);useEffect(()=>localStorage.setItem(KEY,JSON.stringify(data)),[data]);useEffect(()=>{if(!firebaseEnabled){setAuthLoading(false);return}return onAuthStateChanged(auth,u=>{setUser(u?profile(u):null);setAuthLoading(false)})},[]);const login=async(email,password)=>{if(!firebaseEnabled)throw new Error('Firebase is not configured.');const result=await signInWithEmailAndPassword(auth,email,password);return profile(result.user)};const logout=async()=>{if(firebaseEnabled)await signOut(auth);setUser(null)};const update=(key,value)=>setData(d=>({...d,[key]:typeof value==='function'?value(d[key]):value}));const value=useMemo(()=>({data,update,user,login,logout,authLoading}),[data,user,authLoading]);return <C.Provider value={value}>{children}</C.Provider>};export const useApp=()=>useContext(C);
+﻿import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { seed } from '../data/seed';
+import { auth, firebaseEnabled } from '../services/firebase';
+const C = createContext(),
+  KEY = 'supun-costing-data-v1';
+const productCategories = [
+  'Refrigerators',
+  'Fans',
+  'Cookers',
+  'Air Conditioners',
+  'Washing Machines',
+  'Small Appliances',
+  'Other',
+];
+const migrate = data => {
+  const legacy = ['Body Parts', 'Spare Parts', 'Accessories', 'Components'];
+  const categories = data.categories || [];
+  return categories.some(x => legacy.includes(x))
+    ? {
+        ...data,
+        categories: [...productCategories, ...categories.filter(x => !legacy.includes(x))],
+      }
+    : data;
+};
+const profile = u => ({
+  uid: u.uid,
+  name: (u.displayName || u.email?.split('@')[0] || 'User').replace(/[._]/g, ' '),
+  email: u.email,
+  role: 'CFO / Admin',
+});
+export function AppProvider({ children }) {
+  const [data, setData] = useState(() => {
+    try {
+      return migrate(JSON.parse(localStorage.getItem(KEY)) || seed);
+    } catch {
+      return seed;
+    }
+  });
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(firebaseEnabled);
+  useEffect(() => localStorage.setItem(KEY, JSON.stringify(data)), [data]);
+  useEffect(() => {
+    if (!firebaseEnabled) {
+      setAuthLoading(false);
+      return;
+    }
+    return onAuthStateChanged(auth, u => {
+      setUser(u ? profile(u) : null);
+      setAuthLoading(false);
+    });
+  }, []);
+  const login = async (email, password) => {
+    if (!firebaseEnabled) throw new Error('Firebase is not configured.');
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    return profile(result.user);
+  };
+  const logout = async () => {
+    if (firebaseEnabled) await signOut(auth);
+    setUser(null);
+  };
+  const update = (key, value) =>
+    setData(d => ({ ...d, [key]: typeof value === 'function' ? value(d[key]) : value }));
+  const value = useMemo(
+    () => ({ data, update, user, login, logout, authLoading }),
+    [data, user, authLoading],
+  );
+  return <C.Provider value={value}>{children}</C.Provider>;
+}
+export const useApp = () => useContext(C);
