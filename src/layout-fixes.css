@@ -100,15 +100,53 @@ body,
 }
 .costings-table th:first-child,
 .costings-table td:first-child {
-  width: 10%;
+  width: 9%;
 }
 .costings-table th:nth-child(2),
 .costings-table td:nth-child(2) {
-  width: 14%;
+  width: 13%;
 }
 .costings-table th:last-child,
 .costings-table td:last-child {
-  width: 18%;
+  width: 17%;
+}
+.costings-table th:nth-child(5),
+.costings-table td:nth-child(5),
+.costings-table th:nth-child(6),
+.costings-table td:nth-child(6) {
+  width: 10%;
+}
+.costings-table th:nth-child(7),
+.costings-table td:nth-child(7),
+.costings-table th:nth-child(8),
+.costings-table td:nth-child(8) {
+  width: 8%;
+}
+.costings-table th:nth-child(5),
+.costings-table td:nth-child(5),
+.costings-table th:nth-child(6),
+.costings-table td:nth-child(6),
+.costings-table th:nth-child(7),
+.costings-table td:nth-child(7),
+.costings-table th:nth-child(8),
+.costings-table td:nth-child(8) {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+  font-size: 11.5px;
+  letter-spacing: -0.15px;
+}
+.costings-table td:nth-child(5) b,
+.costings-table td:nth-child(6) b,
+.costings-table td:nth-child(7) b,
+.costings-table td:nth-child(8) b,
+.costings-table td:nth-child(5) small,
+.costings-table td:nth-child(6) small,
+.costings-table td:nth-child(7) small,
+.costings-table td:nth-child(8) small {
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 .table-wrap .row-actions {
   display: grid;
