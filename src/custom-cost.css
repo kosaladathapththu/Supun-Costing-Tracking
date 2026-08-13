@@ -1,1 +1,2 @@
 .cost-type-picker{display:flex;flex-direction:column;min-width:0}.cost-type-picker select,.cost-type-picker .custom-cost-name{width:100%;border-radius:0}.cost-type-picker .custom-cost-name{border-top:1px solid #e1e6e4!important;background:#f8faf9!important}
+.btn.danger{background:#fff;color:#b33e3e;border:1px solid #e4bcbc}.btn.danger:hover{background:#fff0f0;border-color:#cf7777}
