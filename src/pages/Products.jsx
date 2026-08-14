@@ -283,8 +283,8 @@ export default function Products() {
                 <th>Purchase total</th>
                 <th>Additional</th>
                 <th>Total landed</th>
-                <th>Unit buying price</th>
-                <th>Unit landed cost</th>
+                <th>buying price</th>
+                <th>landed cost</th>
                 <th>Retail price</th>
                 <th>Markup</th>
                 <th>Margin</th>
