@@ -226,7 +226,7 @@ body,
     text-align: left;
     background: #f7faf8;
   }
-  .product-overview-table td[data-label]::before {
+  .table-wrap td[data-label]::before {
     content: attr(data-label);
     flex: 0 0 46%;
     color: #6c7874;
@@ -239,6 +239,15 @@ body,
   }
   .table-wrap tbody td:last-child {
     border-bottom: 0;
+  }
+  .table-wrap tbody td[data-label] > b,
+  .table-wrap tbody td[data-label] > span,
+  .table-wrap tbody td[data-label] > small {
+    text-align: right;
+  }
+  .table-wrap tbody td[data-label] small {
+    display: block;
+    margin-top: 3px;
   }
   .table-wrap .row-actions {
     width: 100%;

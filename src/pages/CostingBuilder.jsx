@@ -364,14 +364,14 @@ export default function CostingBuilder() {
                         </select>
                       </td>
                       {[
-                        'quantity',
-                        'unitPrice',
-                        'weight',
-                        'volume',
-                        'retailPrice',
-                        'wholesalePrice',
-                      ].map(k => (
-                        <td key={k}>
+                        ['quantity', 'Quantity'],
+                        ['unitPrice', 'Buying price / unit'],
+                        ['weight', 'Weight / unit'],
+                        ['volume', 'Volume / unit'],
+                        ['retailPrice', 'Retail price'],
+                        ['wholesalePrice', 'Wholesale price'],
+                      ].map(([k, label]) => (
+                        <td key={k} data-label={label}>
                           <input
                             type="number"
                             min="0"
@@ -381,7 +381,7 @@ export default function CostingBuilder() {
                           />
                         </td>
                       ))}
-                      <td>
+                      <td data-label="Purchase total">
                         <b>{money(item.purchaseCost)}</b>
                       </td>
                       <td>
@@ -559,25 +559,25 @@ export default function CostingBuilder() {
                       <b>{data.products.find(p => p.id === x.productId)?.name}</b>
                       <small>{data.products.find(p => p.id === x.productId)?.code}</small>
                     </td>
-                    <td>{x.quantity}</td>
-                    <td>{money(x.purchaseCost)}</td>
-                    <td>{money(x.allocatedCost)}</td>
-                    <td>{money(x.totalLandedCost)}</td>
-                    <td>
+                    <td data-label="Quantity">{x.quantity}</td>
+                    <td data-label="Purchase total">{money(x.purchaseCost)}</td>
+                    <td data-label="Allocated costs">{money(x.allocatedCost)}</td>
+                    <td data-label="Total landed">{money(x.totalLandedCost)}</td>
+                    <td data-label="Landed cost / unit">
                       <b>{money(x.unitLandedCost)}</b>
                     </td>
-                    <td>{money(x.retailPrice)}</td>
-                    <td className={x.pricing.retail.profit >= 0 ? 'positive' : 'negative'}>
+                    <td data-label="Retail price">{money(x.retailPrice)}</td>
+                    <td data-label="Retail profit / unit" className={x.pricing.retail.profit >= 0 ? 'positive' : 'negative'}>
                       {money(x.pricing.retail.profit)}
                     </td>
-                    <td>{x.pricing.retail.markup.toFixed(1)}%</td>
-                    <td>{x.pricing.retail.margin.toFixed(1)}%</td>
-                    <td>{money(x.wholesalePrice)}</td>
-                    <td className={x.pricing.wholesale.profit >= 0 ? 'positive' : 'negative'}>
+                    <td data-label="Retail markup">{x.pricing.retail.markup.toFixed(1)}%</td>
+                    <td data-label="Retail margin">{x.pricing.retail.margin.toFixed(1)}%</td>
+                    <td data-label="Wholesale price">{money(x.wholesalePrice)}</td>
+                    <td data-label="Wholesale profit / unit" className={x.pricing.wholesale.profit >= 0 ? 'positive' : 'negative'}>
                       {money(x.pricing.wholesale.profit)}
                     </td>
-                    <td>{x.pricing.wholesale.markup.toFixed(1)}%</td>
-                    <td>{x.pricing.wholesale.margin.toFixed(1)}%</td>
+                    <td data-label="Wholesale markup">{x.pricing.wholesale.markup.toFixed(1)}%</td>
+                    <td data-label="Wholesale margin">{x.pricing.wholesale.margin.toFixed(1)}%</td>
                   </tr>
                 ))}
               </tbody>

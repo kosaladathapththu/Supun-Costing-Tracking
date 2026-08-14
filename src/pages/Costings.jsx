@@ -108,26 +108,26 @@ export default function Costings() {
                     <b>{c.reference}</b>
                     <small>{c.id}</small>
                   </td>
-                  <td>{data.suppliers.find(s => s.id === c.supplierId)?.name}</td>
-                  <td>{c.date}</td>
-                  <td>{c.items.length}</td>
-                  <td>
+                  <td data-label="Supplier">{data.suppliers.find(s => s.id === c.supplierId)?.name}</td>
+                  <td data-label="Date">{c.date}</td>
+                  <td data-label="Products">{c.items.length}</td>
+                  <td data-label="Landed cost">
                     <b>{money(c.landedTotal)}</b>
                     <small>P: {money(c.purchaseTotal)}</small>
                   </td>
-                  <td>
+                  <td data-label="Selling value">
                     <b>{money(c.summary.retail.sales)}</b>
                     <small>W: {money(c.summary.wholesale.sales)}</small>
                   </td>
-                  <td>
+                  <td data-label="Markup">
                     <b>R {c.summary.retail.markup.toFixed(1)}%</b>
                     <small>W {c.summary.wholesale.markup.toFixed(1)}%</small>
                   </td>
-                  <td>
+                  <td data-label="Margin">
                     <b>R {c.summary.retail.margin.toFixed(1)}%</b>
                     <small>W {c.summary.wholesale.margin.toFixed(1)}%</small>
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <Badge>{c.status}</Badge>
                   </td>
                   <td>

@@ -112,13 +112,13 @@ export default function Reports() {
                   <td>
                     <b>{c.reference}</b>
                   </td>
-                  <td>{c.date}</td>
-                  <td>{money(c.purchaseTotal)}</td>
-                  <td>{money(c.additionalTotal)}</td>
-                  <td>
+                  <td data-label="Date">{c.date}</td>
+                  <td data-label="Purchase total">{money(c.purchaseTotal)}</td>
+                  <td data-label="Additional costs">{money(c.additionalTotal)}</td>
+                  <td data-label="Landed total">
                     <b>{money(c.landedTotal)}</b>
                   </td>
-                  <td>
+                  <td data-label="Cost increase">
                     {c.purchaseTotal ? ((c.additionalTotal / c.purchaseTotal) * 100).toFixed(1) : 0}
                     %
                   </td>

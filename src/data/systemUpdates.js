@@ -1,5 +1,11 @@
 export const systemUpdates = [
   [
+    'release-mobile-experience',
+    'Complete mobile experience improved',
+    'All costing, pricing, shipment and report values now have clear phone labels with improved cards, forms, actions and panels.',
+    '2026-08-14T11:12:00+05:30',
+  ],
+  [
     'release-company-logo',
     'Official Supun Group logo applied',
     'The company logo now appears in application branding, login screens, printed reports and the browser icon.',

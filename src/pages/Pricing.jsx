@@ -53,25 +53,25 @@ export default function Pricing() {
                 const p = data.products.find(x => x.id === r.productId);
                 return (
                   <tr key={r.productId}>
-                    <td>
+                    <td data-label="Last costed">
                       <b>{p?.name}</b>
                       <small>{p?.code}</small>
                     </td>
-                    <td>
+                    <td data-label="Unit landed cost">
                       {r.date}
                       <small>{r.reference}</small>
                     </td>
                     <td>
                       <b>{money(r.unitLandedCost)}</b>
                     </td>
-                    <td>{money(r.retailPrice)}</td>
-                    <td className={r.pricing.retail.profit >= 0 ? 'positive' : 'negative'}>
+                    <td data-label="Retail price">{money(r.retailPrice)}</td>
+                    <td data-label="Retail profit" className={r.pricing.retail.profit >= 0 ? 'positive' : 'negative'}>
                       {money(r.pricing.retail.profit)}
                     </td>
-                    <td>{r.pricing.retail.markup.toFixed(1)}%</td>
-                    <td>{r.pricing.retail.margin.toFixed(1)}%</td>
-                    <td>{money(r.wholesalePrice)}</td>
-                    <td>{r.pricing.wholesale.margin.toFixed(1)}%</td>
+                    <td data-label="Retail markup">{r.pricing.retail.markup.toFixed(1)}%</td>
+                    <td data-label="Retail margin">{r.pricing.retail.margin.toFixed(1)}%</td>
+                    <td data-label="Wholesale price">{money(r.wholesalePrice)}</td>
+                    <td data-label="Wholesale margin">{r.pricing.wholesale.margin.toFixed(1)}%</td>
                   </tr>
                 );
               })}
