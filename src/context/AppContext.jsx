@@ -1,13 +1,17 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  createUserWithEmailAndPassword,
+  getAuth,
   onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
-import { doc, getDoc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
+import { deleteApp, initializeApp } from 'firebase/app';
+import { collection, doc, getDoc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { seed } from '../data/seed';
-import { auth, db, firebaseEnabled } from '../services/firebase';
+import { app, auth, db, firebaseEnabled } from '../services/firebase';
 
 const C = createContext();
 const STORAGE_KEY = 'supun-costing-data-v1';
@@ -54,6 +58,7 @@ export function AppProvider({ children }) {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(firebaseEnabled);
   const [syncError, setSyncError] = useState('');
+  const [users, setUsers] = useState([]);
   const userRef = useRef(null);
 
   useEffect(() => localStorage.setItem(STORAGE_KEY, JSON.stringify(data)), [data]);
@@ -80,6 +85,12 @@ export function AppProvider({ children }) {
 
       setAuthLoading(true);
       try {
+        if (account.email?.toLowerCase() !== 'cfo@supungroup.lk') {
+          const userProfile = await getDoc(doc(db, 'users', account.uid));
+          if (userProfile.exists()) {
+            setUser(current => ({ ...current, ...userProfile.data(), uid: account.uid }));
+          }
+        }
         const localData = readLocalData();
         const references = SECTIONS.map(section => doc(db, 'appData', section));
         const snapshots = await Promise.all(references.map(reference => getDoc(reference)));
@@ -114,6 +125,15 @@ export function AppProvider({ children }) {
             error => setSyncError(error.message || 'Unable to synchronize Firebase data.'),
           ),
         );
+        if (account.email?.toLowerCase() === 'cfo@supungroup.lk') {
+          stopDataListeners.push(
+            onSnapshot(collection(db, 'users'), snapshot => {
+              setUsers(snapshot.docs.map(item => ({ id: item.id, ...item.data() })));
+            }),
+          );
+        } else {
+          setUsers([]);
+        }
       } catch (error) {
         setSyncError(error.message || 'Unable to load Firebase data.');
       } finally {
@@ -139,6 +159,31 @@ export function AppProvider({ children }) {
     await sendPasswordResetEmail(auth, email);
   };
 
+  const createSystemUser = async ({ name, email, password, role }) => {
+    if (userRef.current?.email?.toLowerCase() !== 'cfo@supungroup.lk') {
+      throw new Error('Only the CFO can create system users.');
+    }
+    const secondaryApp = initializeApp(app.options, `create-user-${Date.now()}`);
+    const secondaryAuth = getAuth(secondaryApp);
+    try {
+      const result = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+      await updateProfile(result.user, { displayName: name });
+      await setDoc(doc(db, 'users', result.user.uid), {
+        name,
+        email: email.toLowerCase(),
+        role,
+        active: true,
+        createdAt: serverTimestamp(),
+        createdBy: userRef.current.uid,
+      });
+      await sendPasswordResetEmail(auth, email);
+      return result.user.uid;
+    } finally {
+      await signOut(secondaryAuth).catch(() => undefined);
+      await deleteApp(secondaryApp);
+    }
+  };
+
   const logout = async () => {
     if (firebaseEnabled) await signOut(auth);
     userRef.current = null;
@@ -160,8 +205,19 @@ export function AppProvider({ children }) {
   };
 
   const value = useMemo(
-    () => ({ data, update, user, login, logout, resetPassword, authLoading, syncError }),
-    [data, user, authLoading, syncError],
+    () => ({
+      data,
+      update,
+      user,
+      users,
+      login,
+      logout,
+      resetPassword,
+      createSystemUser,
+      authLoading,
+      syncError,
+    }),
+    [data, user, users, authLoading, syncError],
   );
   return <C.Provider value={value}>{children}</C.Provider>;
 }

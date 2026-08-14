@@ -10,8 +10,20 @@ service cloud.firestore {
       return signedIn() && request.auth.token.email == 'cfo@supungroup.lk';
     }
 
+    function isCostingOfficer() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.active == true
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Costing Officer';
+    }
+
     match /appData/{section} {
       allow read: if signedIn();
+      allow create, update, delete: if isCfo() || isCostingOfficer();
+    }
+
+    match /users/{userId} {
+      allow read: if isCfo() || (signedIn() && request.auth.uid == userId);
       allow create, update, delete: if isCfo();
     }
 

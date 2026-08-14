@@ -1,15 +1,44 @@
 import { useState } from 'react';
-import { Plus, Trash2, ShieldCheck, ScrollText } from 'lucide-react';
+import { Plus, Trash2, ShieldCheck, ScrollText, UserPlus } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Button, PageHeader } from '../components/UI';
 export default function Settings() {
-  const { data, update } = useApp();
+  const { data, update, user, users, createSystemUser } = useApp();
   const [cat, setCat] = useState(''),
-    [cost, setCost] = useState('');
+    [cost, setCost] = useState(''),
+    [newUser, setNewUser] = useState({
+      name: '',
+      email: '',
+      password: '',
+      role: 'Viewer',
+    }),
+    [userMessage, setUserMessage] = useState(''),
+    [userError, setUserError] = useState(''),
+    [creatingUser, setCreatingUser] = useState(false);
   const add = (key, value, set) => {
     if (value.trim()) update(key, x => [...x, value.trim()]);
     set('');
   };
+  const createUser = async event => {
+    event.preventDefault();
+    setCreatingUser(true);
+    setUserMessage('');
+    setUserError('');
+    try {
+      await createSystemUser({ ...newUser, email: newUser.email.trim().toLowerCase() });
+      setUserMessage('User created. A password setup email was sent to the account owner.');
+      setNewUser({ name: '', email: '', password: '', role: 'Viewer' });
+    } catch (error) {
+      setUserError(
+        error.code === 'auth/email-already-in-use'
+          ? 'That email already has a Firebase login.'
+          : error.message || 'Unable to create the user.',
+      );
+    } finally {
+      setCreatingUser(false);
+    }
+  };
+  const isCfo = user?.email?.toLowerCase() === 'cfo@supungroup.lk';
   return (
     <>
       <PageHeader
@@ -18,6 +47,79 @@ export default function Settings() {
         description="Configure master data, access roles and governance."
       />
       <div className="settings-grid">
+        {isCfo && (
+          <section className="card setting-card user-management">
+            <div className="card-title">
+              <div>
+                <h2>
+                  <UserPlus /> Add system user
+                </h2>
+                <p>Create access and let the email owner choose their own password.</p>
+              </div>
+            </div>
+            <form className="user-form" onSubmit={createUser}>
+              <label>
+                User name
+                <input
+                  required
+                  value={newUser.name}
+                  onChange={event => setNewUser(value => ({ ...value, name: event.target.value }))}
+                />
+              </label>
+              <label>
+                Email address
+                <input
+                  required
+                  type="email"
+                  value={newUser.email}
+                  onChange={event => setNewUser(value => ({ ...value, email: event.target.value }))}
+                />
+              </label>
+              <label>
+                Temporary password
+                <input
+                  required
+                  type="password"
+                  minLength="6"
+                  autoComplete="new-password"
+                  value={newUser.password}
+                  onChange={event =>
+                    setNewUser(value => ({ ...value, password: event.target.value }))
+                  }
+                />
+              </label>
+              <label>
+                Access role
+                <select
+                  value={newUser.role}
+                  onChange={event => setNewUser(value => ({ ...value, role: event.target.value }))}
+                >
+                  <option>Viewer</option>
+                  <option>Costing Officer</option>
+                </select>
+              </label>
+              {userError && <div className="error">{userError}</div>}
+              {userMessage && <div className="login-notice">{userMessage}</div>}
+              <Button disabled={creatingUser}>
+                <UserPlus size={17} />
+                {creatingUser ? 'Creating user...' : 'Create user & send email'}
+              </Button>
+            </form>
+            {users.length > 0 && (
+              <div className="managed-users">
+                {users.map(item => (
+                  <div className="setting-row" key={item.id}>
+                    <span>
+                      <b>{item.name}</b>
+                      <small>{item.email}</small>
+                    </span>
+                    <em>{item.role}</em>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
         <ListCard
           title="Product categories"
           description="Group products for search and reporting."
