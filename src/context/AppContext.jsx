@@ -161,6 +161,16 @@ export function AppProvider({ children }) {
     await sendPasswordResetEmail(auth, email);
   };
 
+  const updateAccountName = async name => {
+    const account = auth.currentUser;
+    if (!account) throw new Error('No authenticated account was found.');
+    const cleanName = name.trim();
+    if (!cleanName) throw new Error('Enter a valid name.');
+    await updateProfile(account, { displayName: cleanName });
+    await setDoc(doc(db, 'users', account.uid), { name: cleanName }, { merge: true });
+    setUser(current => ({ ...current, name: cleanName }));
+  };
+
   const createSystemUser = async ({ name, email, password, role }) => {
     if (!isAdministrator(userRef.current?.email)) {
       throw new Error('Only an administrator can create system users.');
@@ -215,6 +225,7 @@ export function AppProvider({ children }) {
       login,
       logout,
       resetPassword,
+      updateAccountName,
       createSystemUser,
       authLoading,
       syncError,
