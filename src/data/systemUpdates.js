@@ -1,5 +1,11 @@
 export const systemUpdates = [
   [
+    'release-full-product-profitability',
+    'Complete product profitability details added',
+    'Product reports now show every cost, total sales, total profit, full markup and full margin.',
+    '2026-08-14T10:51:00+05:30',
+  ],
+  [
     'release-mobile-cost-labels',
     'Mobile product costing labels improved',
     'Every costing value now shows its name on mobile devices.',

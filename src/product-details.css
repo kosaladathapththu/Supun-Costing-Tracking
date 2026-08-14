@@ -108,6 +108,20 @@
   .product-detail {
     padding: 14px;
   }
+  .product-detail td[data-label]::before {
+    content: attr(data-label);
+    flex: 0 0 48%;
+    color: #6b7773;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-align: left;
+    text-transform: uppercase;
+  }
+  .product-detail .table-wrap tbody td:first-child {
+    font-size: 13px;
+    font-weight: 800;
+  }
 }
 @media print {
   @page {

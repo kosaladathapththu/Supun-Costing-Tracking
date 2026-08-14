@@ -693,6 +693,11 @@ function ProductDetail({ product, record, suppliers, onClose, onPrint }) {
       </Modal>
     );
   const idx = c.items.findIndex(x => x.productId === product.id);
+  const quantity = Number(i.quantity) || 0;
+  const retailTotal = (Number(i.retailPrice) || 0) * quantity;
+  const wholesaleTotal = (Number(i.wholesalePrice) || 0) * quantity;
+  const retailTotalProfit = i.pricing.retail.profit * quantity;
+  const wholesaleTotalProfit = i.pricing.wholesale.profit * quantity;
   const costs = c.costs
     .map(cost => ({
       name: cost.type,
@@ -737,25 +742,25 @@ function ProductDetail({ product, record, suppliers, onClose, onPrint }) {
               <tbody>
                 <tr>
                   <td>Product purchase cost</td>
-                  <td>{money(i.purchaseCost)}</td>
+                  <td data-label="Amount">{money(i.purchaseCost)}</td>
                 </tr>
                 {costs.map((x, n) => (
                   <tr key={n}>
                     <td>{x.name}</td>
-                    <td>{money(x.amount)}</td>
+                    <td data-label="Allocated amount">{money(x.amount)}</td>
                   </tr>
                 ))}
                 <tr className="strong-row">
                   <td>Total additional costs</td>
-                  <td>{money(i.allocatedCost)}</td>
+                  <td data-label="Amount">{money(i.allocatedCost)}</td>
                 </tr>
                 <tr className="strong-row">
                   <td>Total landed cost</td>
-                  <td>{money(i.totalLandedCost)}</td>
+                  <td data-label="Amount">{money(i.totalLandedCost)}</td>
                 </tr>
                 <tr className="grand-row">
                   <td>Unit landed cost</td>
-                  <td>{money(i.unitLandedCost)}</td>
+                  <td data-label="Amount">{money(i.unitLandedCost)}</td>
                 </tr>
               </tbody>
             </table>
@@ -768,8 +773,10 @@ function ProductDetail({ product, record, suppliers, onClose, onPrint }) {
               <thead>
                 <tr>
                   <th>Price level</th>
-                  <th>Selling price</th>
+                  <th>Unit price</th>
+                  <th>Total sales</th>
                   <th>Profit / unit</th>
+                  <th>Total profit</th>
                   <th>Markup</th>
                   <th>Margin</th>
                 </tr>
@@ -779,19 +786,23 @@ function ProductDetail({ product, record, suppliers, onClose, onPrint }) {
                   <td>
                     <b>Retail</b>
                   </td>
-                  <td>{money(i.retailPrice)}</td>
-                  <td>{money(i.pricing.retail.profit)}</td>
-                  <td>{i.pricing.retail.markup.toFixed(2)}%</td>
-                  <td>{i.pricing.retail.margin.toFixed(2)}%</td>
+                  <td data-label="Unit selling price">{money(i.retailPrice)}</td>
+                  <td data-label="Total selling value">{money(retailTotal)}</td>
+                  <td data-label="Profit / unit">{money(i.pricing.retail.profit)}</td>
+                  <td data-label="Total profit">{money(retailTotalProfit)}</td>
+                  <td data-label="Full markup">{i.pricing.retail.markup.toFixed(2)}%</td>
+                  <td data-label="Full margin">{i.pricing.retail.margin.toFixed(2)}%</td>
                 </tr>
                 <tr>
                   <td>
                     <b>Wholesale</b>
                   </td>
-                  <td>{money(i.wholesalePrice)}</td>
-                  <td>{money(i.pricing.wholesale.profit)}</td>
-                  <td>{i.pricing.wholesale.markup.toFixed(2)}%</td>
-                  <td>{i.pricing.wholesale.margin.toFixed(2)}%</td>
+                  <td data-label="Unit selling price">{money(i.wholesalePrice)}</td>
+                  <td data-label="Total selling value">{money(wholesaleTotal)}</td>
+                  <td data-label="Profit / unit">{money(i.pricing.wholesale.profit)}</td>
+                  <td data-label="Total profit">{money(wholesaleTotalProfit)}</td>
+                  <td data-label="Full markup">{i.pricing.wholesale.markup.toFixed(2)}%</td>
+                  <td data-label="Full margin">{i.pricing.wholesale.margin.toFixed(2)}%</td>
                 </tr>
               </tbody>
             </table>
