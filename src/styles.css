@@ -273,6 +273,15 @@ h3 {
 .notification-item:last-child {
   border-bottom: 0;
 }
+.notification-section-title {
+  padding: 9px 17px;
+  background: #f5f8f7;
+  color: #7b8883;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
 .notification-type {
   width: 31px;
   height: 31px;
@@ -295,6 +304,12 @@ h3 {
   margin-top: 4px;
   color: var(--muted);
   font-size: 10px;
+}
+.notification-item p {
+  margin: 4px 0;
+  color: #56645f;
+  font-size: 10px;
+  line-height: 1.4;
 }
 .account-panel {
   width: min(350px, calc(100vw - 30px));

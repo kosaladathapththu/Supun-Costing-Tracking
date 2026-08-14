@@ -16,6 +16,7 @@ import {
   CheckCheck,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { systemUpdates } from '../data/systemUpdates';
 
 const nav = [
   ['/', 'Dashboard', LayoutDashboard],
@@ -44,19 +45,17 @@ export default function Layout({ children }) {
   const label = nav.find(n => n[0] === location.pathname)?.[1] || 'Costing';
   const seenKey = `supun-notifications-seen-${user?.uid}`;
   const [lastSeen, setLastSeen] = useState(() => Number(localStorage.getItem(seenKey)) || 0);
-  const notifications = useMemo(
-    () =>
-      [
-        ...data.audit.map(item => ({ ...item, time: new Date(item.date).getTime() })),
-        {
-          id: 'system-firestore-live',
-          action: 'System update: Firebase synchronization and user management are active',
-          user: 'Supun Costing System',
-          date: '2026-08-14T10:30:00+05:30',
-          time: new Date('2026-08-14T10:30:00+05:30').getTime(),
-        },
-      ].sort((a, b) => b.time - a.time),
+  const activityNotifications = useMemo(
+    () => data.audit.map(item => ({ ...item, time: new Date(item.date).getTime() })),
     [data.audit],
+  );
+  const releaseNotifications = useMemo(
+    () => systemUpdates.map(item => ({ ...item, time: new Date(item.date).getTime() })),
+    [],
+  );
+  const notifications = useMemo(
+    () => [...activityNotifications, ...releaseNotifications].sort((a, b) => b.time - a.time),
+    [activityNotifications, releaseNotifications],
   );
   const unread = notifications.filter(item => item.time > lastSeen).length;
 
@@ -155,7 +154,21 @@ export default function Layout({ children }) {
                   <CheckCheck size={18} />
                 </div>
                 <div className="notification-list">
-                  {notifications.slice(0, 10).map(item => {
+                  <div className="notification-section-title">System updates</div>
+                  {releaseNotifications.map(item => (
+                    <div className="notification-item system-notification" key={item.id}>
+                      <span className="notification-type">
+                        <Settings size={15} />
+                      </span>
+                      <div>
+                        <b>{item.title}</b>
+                        <p>{item.detail}</p>
+                        <small>{new Date(item.date).toLocaleString()}</small>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="notification-section-title">Recent activity</div>
+                  {activityNotifications.slice(0, 10).map(item => {
                     const Icon = notificationIcon(item.action);
                     return (
                       <div className="notification-item" key={item.id}>
