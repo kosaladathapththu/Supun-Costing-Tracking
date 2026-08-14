@@ -34,14 +34,16 @@ export default function Dashboard() {
         title={`Good ${new Date().getHours() < 12 ? 'morning' : 'afternoon'}, ${user.name.split(' ')[0]}.`}
         description="Here's what is happening with your product costs."
         action={
-          <div className="action-row">
+          <div className="action-row dashboard-actions">
             <button className="btn secondary" onClick={() => nav('/costings/new')}>
               <Plus size={18} />
-              Add full shipment
+              <span className="desktop-action-label">Add full shipment</span>
+              <span className="mobile-action-label">Shipment</span>
             </button>
             <button className="btn primary" onClick={() => nav('/products?add=1')}>
               <Plus size={18} />
-              Add product & costing
+              <span className="desktop-action-label">Add product & costing</span>
+              <span className="mobile-action-label">Product & cost</span>
             </button>
           </div>
         }
