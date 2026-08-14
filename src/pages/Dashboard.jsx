@@ -10,6 +10,20 @@ export default function Dashboard() {
   const [q, setQ] = useState('');
   const costings = useMemo(() => data.costings.map(calculateCosting), [data.costings]);
   const latest = costings[0];
+  const latestProducts = useMemo(() => {
+    const latestCostByProduct = {};
+    [...costings]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .forEach(costing =>
+        costing.items.forEach(item => {
+          if (!latestCostByProduct[item.productId]) latestCostByProduct[item.productId] = item;
+        }),
+      );
+    return data.products
+      .slice(-5)
+      .reverse()
+      .map(product => ({ ...product, costing: latestCostByProduct[product.id] }));
+  }, [data.products, costings]);
   const results = q
     ? data.products.filter(p => (p.name + p.code).toLowerCase().includes(q.toLowerCase()))
     : [];
@@ -81,6 +95,57 @@ export default function Dashboard() {
           note="Needs attention"
         />
       </div>
+      <section className="card latest-products">
+        <div className="card-title">
+          <div>
+            <h2>Latest products</h2>
+            <p>Recently added products and their latest pricing</p>
+          </div>
+          <button className="link" onClick={() => nav('/products')}>
+            View all
+          </button>
+        </div>
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Buy / unit</th>
+                <th>Landed / unit</th>
+                <th>Retail</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {latestProducts.map(product => (
+                <tr key={product.id} onClick={() => nav('/products')}>
+                  <td>
+                    <b>{product.name || 'Unnamed product'}</b>
+                    <small>{product.code}</small>
+                  </td>
+                  <td>{product.category || '—'}</td>
+                  <td>{product.costing ? money(product.costing.unitPrice) : '—'}</td>
+                  <td>
+                    <b>{product.costing ? money(product.costing.unitLandedCost) : 'Not costed'}</b>
+                  </td>
+                  <td>{product.costing ? money(product.costing.retailPrice) : '—'}</td>
+                  <td>
+                    <Badge>{product.status || 'Active'}</Badge>
+                  </td>
+                </tr>
+              ))}
+              {latestProducts.length === 0 && (
+                <tr>
+                  <td colSpan="6" className="empty-table">
+                    No products have been added yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
       <div className="dashboard-grid">
         <section className="card">
           <div className="card-title">

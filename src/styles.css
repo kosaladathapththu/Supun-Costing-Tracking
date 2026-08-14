@@ -365,6 +365,20 @@ td small {
   grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
   gap: 18px;
 }
+.latest-products {
+  margin-bottom: 18px;
+}
+.latest-products tbody tr {
+  cursor: pointer;
+}
+.latest-products tbody tr:hover {
+  background: #f7faf8;
+}
+.empty-table {
+  padding: 28px !important;
+  color: var(--muted);
+  text-align: center !important;
+}
 .card-title {
   padding: 20px 22px;
   display: flex;
