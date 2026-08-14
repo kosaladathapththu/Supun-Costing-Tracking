@@ -45,16 +45,17 @@ export default function Layout({ children }) {
   const seenKey = `supun-notifications-seen-${user?.uid}`;
   const [lastSeen, setLastSeen] = useState(() => Number(localStorage.getItem(seenKey)) || 0);
   const notifications = useMemo(
-    () => [
-      ...data.audit.map(item => ({ ...item, time: new Date(item.date).getTime() })),
-      {
-        id: 'system-firestore-live',
-        action: 'System update: Firebase synchronization and user management are active',
-        user: 'Supun Costing System',
-        date: '2026-08-14T10:30:00+05:30',
-        time: new Date('2026-08-14T10:30:00+05:30').getTime(),
-      },
-    ].sort((a, b) => b.time - a.time),
+    () =>
+      [
+        ...data.audit.map(item => ({ ...item, time: new Date(item.date).getTime() })),
+        {
+          id: 'system-firestore-live',
+          action: 'System update: Firebase synchronization and user management are active',
+          user: 'Supun Costing System',
+          date: '2026-08-14T10:30:00+05:30',
+          time: new Date('2026-08-14T10:30:00+05:30').getTime(),
+        },
+      ].sort((a, b) => b.time - a.time),
     [data.audit],
   );
   const unread = notifications.filter(item => item.time > lastSeen).length;
