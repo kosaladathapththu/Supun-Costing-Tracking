@@ -310,16 +310,20 @@ export default function Products() {
                         </span>
                       </div>
                     </td>
-                    <td>{i ? money(i.purchaseCost) : '—'}</td>
-                    <td>{i ? money(i.allocatedCost) : '—'}</td>
-                    <td>
+                    <td data-label="Purchase total">{i ? money(i.purchaseCost) : '—'}</td>
+                    <td data-label="Additional costs">{i ? money(i.allocatedCost) : '—'}</td>
+                    <td data-label="Total landed">
                       <b>{i ? money(i.totalLandedCost) : 'Not costed'}</b>
                     </td>
-                    <td>{i ? money(i.unitPrice) : '—'}</td>
-                    <td>{i ? money(i.unitLandedCost) : '—'}</td>
-                    <td>{i ? money(i.retailPrice) : '—'}</td>
-                    <td>{i ? `${i.pricing.retail.markup.toFixed(1)}%` : '—'}</td>
-                    <td>{i ? `${i.pricing.retail.margin.toFixed(1)}%` : '—'}</td>
+                    <td data-label="Buying price / unit">{i ? money(i.unitPrice) : '—'}</td>
+                    <td data-label="Landed cost / unit">{i ? money(i.unitLandedCost) : '—'}</td>
+                    <td data-label="Retail price">{i ? money(i.retailPrice) : '—'}</td>
+                    <td data-label="Markup">
+                      {i ? `${i.pricing.retail.markup.toFixed(1)}%` : '—'}
+                    </td>
+                    <td data-label="Margin">
+                      {i ? `${i.pricing.retail.margin.toFixed(1)}%` : '—'}
+                    </td>
                     <td>
                       <div className="row-actions">
                         <Button variant="secondary" onClick={() => setView(p)}>
