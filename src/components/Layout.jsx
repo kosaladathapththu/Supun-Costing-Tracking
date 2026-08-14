@@ -94,7 +94,7 @@ export default function Layout({ children }) {
     <div className="shell">
       <aside className={open ? 'open' : ''}>
         <div className="brand">
-          <div className="brand-mark">SG</div>
+          <img className="brand-mark logo-image" src="/supun-group-logo.png" alt="Supun Group" />
           <div>
             <b>SUPUN GROUP</b>
             <span>Costing & Pricing</span>

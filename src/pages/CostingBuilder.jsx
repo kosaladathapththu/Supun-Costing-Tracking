@@ -167,6 +167,7 @@ export default function CostingBuilder() {
   return (
     <>
       <div className="print-heading">
+        <img className="print-brand-logo" src="/supun-group-logo.png" alt="Supun Group" />
         <h1>SUPUN GROUP OF COMPANIES</h1>
         <h2>Complete Costing & Pricing Report</h2>
         <p>
@@ -592,7 +593,7 @@ function ProductPrintReport({ item, product, breakdown }) {
   return (
     <article className="product-print-report">
       <header>
-        <div className="report-logo">SG</div>
+        <img className="report-logo" src="/supun-group-logo.png" alt="Supun Group" />
         <div>
           <h1>SUPUN GROUP OF COMPANIES</h1>
           <p>Product Costing & Pricing Report</p>

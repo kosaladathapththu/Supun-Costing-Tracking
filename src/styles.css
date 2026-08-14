@@ -74,6 +74,18 @@ h3 {
   height: 58px;
   font-size: 20px;
 }
+.brand-mark.logo-image {
+  object-fit: contain;
+  padding: 3px;
+  border-radius: 9px;
+  background: #fff;
+}
+.login-brand .brand-mark.large.logo-image {
+  width: 150px;
+  height: 116px;
+  padding: 0;
+  background: transparent;
+}
 .brand b {
   font: 700 13px Manrope;
   letter-spacing: 0.9px;
@@ -1524,6 +1536,11 @@ tbody tr:hover {
 .print-costs {
   display: none;
 }
+.print-brand-logo {
+  width: 76px;
+  height: 58px;
+  object-fit: contain;
+}
 .costings-table .btn {
   padding: 7px 11px;
 }
@@ -1858,14 +1875,9 @@ tbody tr:hover {
     margin-bottom: 16px;
   }
   .report-logo {
-    width: 48px;
+    width: 62px;
     height: 48px;
-    border-radius: 9px;
-    background: #c9973f;
-    color: #153e33;
-    display: grid;
-    place-items: center;
-    font: bold 17px Arial;
+    object-fit: contain;
     margin-right: 13px;
   }
   .product-print-report header h1 {

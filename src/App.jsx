@@ -15,7 +15,7 @@ export default function App() {
   if (authLoading)
     return (
       <div className="app-loading">
-        <div className="brand-mark">SG</div>
+        <img className="brand-mark logo-image" src="/supun-group-logo.png" alt="Supun Group" />
         <p>Connecting securely...</p>
       </div>
     );

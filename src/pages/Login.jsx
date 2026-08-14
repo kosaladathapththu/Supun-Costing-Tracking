@@ -47,7 +47,11 @@ export default function Login() {
   return (
     <div className="login-page">
       <div className="login-brand">
-        <div className="brand-mark large">SG</div>
+        <img
+          className="brand-mark large logo-image"
+          src="/supun-group-logo.png"
+          alt="Supun Group of Companies"
+        />
         <h1>
           Know the true cost.
           <br />
@@ -66,7 +70,7 @@ export default function Login() {
       </div>
       <form className="login-card" onSubmit={submit}>
         <div className="mobile-logo">
-          <div className="brand-mark">SG</div>
+          <img className="brand-mark logo-image" src="/supun-group-logo.png" alt="Supun Group" />
           <b>SUPUN GROUP</b>
         </div>
         <span className="kicker">WELCOME BACK</span>

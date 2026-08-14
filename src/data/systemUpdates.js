@@ -1,5 +1,11 @@
 export const systemUpdates = [
   [
+    'release-company-logo',
+    'Official Supun Group logo applied',
+    'The company logo now appears in application branding, login screens, printed reports and the browser icon.',
+    '2026-08-14T10:58:00+05:30',
+  ],
+  [
     'release-full-product-profitability',
     'Complete product profitability details added',
     'Product reports now show every cost, total sales, total profit, full markup and full margin.',
