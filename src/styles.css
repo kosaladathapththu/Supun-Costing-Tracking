@@ -1214,6 +1214,9 @@ tbody tr:hover {
   .settings-grid {
     grid-template-columns: 1fr;
   }
+  .user-form {
+    grid-template-columns: 1fr;
+  }
   .report-cards {
     grid-template-columns: 1fr;
   }
