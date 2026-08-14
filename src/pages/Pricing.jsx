@@ -65,7 +65,10 @@ export default function Pricing() {
                       <b>{money(r.unitLandedCost)}</b>
                     </td>
                     <td data-label="Retail price">{money(r.retailPrice)}</td>
-                    <td data-label="Retail profit" className={r.pricing.retail.profit >= 0 ? 'positive' : 'negative'}>
+                    <td
+                      data-label="Retail profit"
+                      className={r.pricing.retail.profit >= 0 ? 'positive' : 'negative'}
+                    >
                       {money(r.pricing.retail.profit)}
                     </td>
                     <td data-label="Retail markup">{r.pricing.retail.markup.toFixed(1)}%</td>

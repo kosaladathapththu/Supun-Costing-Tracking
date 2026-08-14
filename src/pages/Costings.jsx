@@ -108,7 +108,9 @@ export default function Costings() {
                     <b>{c.reference}</b>
                     <small>{c.id}</small>
                   </td>
-                  <td data-label="Supplier">{data.suppliers.find(s => s.id === c.supplierId)?.name}</td>
+                  <td data-label="Supplier">
+                    {data.suppliers.find(s => s.id === c.supplierId)?.name}
+                  </td>
                   <td data-label="Date">{c.date}</td>
                   <td data-label="Products">{c.items.length}</td>
                   <td data-label="Landed cost">

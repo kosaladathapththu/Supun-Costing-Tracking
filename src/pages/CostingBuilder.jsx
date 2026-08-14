@@ -567,13 +567,19 @@ export default function CostingBuilder() {
                       <b>{money(x.unitLandedCost)}</b>
                     </td>
                     <td data-label="Retail price">{money(x.retailPrice)}</td>
-                    <td data-label="Retail profit / unit" className={x.pricing.retail.profit >= 0 ? 'positive' : 'negative'}>
+                    <td
+                      data-label="Retail profit / unit"
+                      className={x.pricing.retail.profit >= 0 ? 'positive' : 'negative'}
+                    >
                       {money(x.pricing.retail.profit)}
                     </td>
                     <td data-label="Retail markup">{x.pricing.retail.markup.toFixed(1)}%</td>
                     <td data-label="Retail margin">{x.pricing.retail.margin.toFixed(1)}%</td>
                     <td data-label="Wholesale price">{money(x.wholesalePrice)}</td>
-                    <td data-label="Wholesale profit / unit" className={x.pricing.wholesale.profit >= 0 ? 'positive' : 'negative'}>
+                    <td
+                      data-label="Wholesale profit / unit"
+                      className={x.pricing.wholesale.profit >= 0 ? 'positive' : 'negative'}
+                    >
                       {money(x.pricing.wholesale.profit)}
                     </td>
                     <td data-label="Wholesale markup">{x.pricing.wholesale.markup.toFixed(1)}%</td>

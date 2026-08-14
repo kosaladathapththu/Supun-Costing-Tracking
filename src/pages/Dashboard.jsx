@@ -127,11 +127,15 @@ export default function Dashboard() {
                     <small>{product.code}</small>
                   </td>
                   <td data-label="Category">{product.category || '—'}</td>
-                  <td data-label="Buying price / unit">{product.costing ? money(product.costing.unitPrice) : '—'}</td>
+                  <td data-label="Buying price / unit">
+                    {product.costing ? money(product.costing.unitPrice) : '—'}
+                  </td>
                   <td data-label="Landed cost / unit">
                     <b>{product.costing ? money(product.costing.unitLandedCost) : 'Not costed'}</b>
                   </td>
-                  <td data-label="Retail price">{product.costing ? money(product.costing.retailPrice) : '—'}</td>
+                  <td data-label="Retail price">
+                    {product.costing ? money(product.costing.retailPrice) : '—'}
+                  </td>
                   <td data-label="Status">
                     <Badge>{product.status || 'Active'}</Badge>
                   </td>
@@ -177,7 +181,9 @@ export default function Dashboard() {
                       <b>{c.reference}</b>
                       <small>{c.id}</small>
                     </td>
-                    <td data-label="Supplier">{data.suppliers.find(s => s.id === c.supplierId)?.name}</td>
+                    <td data-label="Supplier">
+                      {data.suppliers.find(s => s.id === c.supplierId)?.name}
+                    </td>
                     <td data-label="Date">{c.date}</td>
                     <td data-label="Total landed">
                       <b>{money(c.landedTotal)}</b>
