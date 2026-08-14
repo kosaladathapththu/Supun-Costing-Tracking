@@ -9,18 +9,35 @@ const message = code =>
     'auth/network-request-failed': 'Unable to connect to Firebase. Check your internet connection.',
   })[code] || 'Unable to sign in. Please check your credentials.';
 export default function Login() {
-  const { login } = useApp();
+  const { login, resetPassword } = useApp();
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState(''),
     [error, setError] = useState(''),
+    [notice, setNotice] = useState(''),
     [loading, setLoading] = useState(false);
   const submit = async e => {
     e.preventDefault();
     if (!email || !password) return setError('Enter your email and password.');
     setLoading(true);
     setError('');
+    setNotice('');
     try {
       await login(email.trim(), password);
+    } catch (err) {
+      setError(message(err.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+  const forgot = async () => {
+    const address = email.trim();
+    if (!address) return setError('Enter your email address first.');
+    setLoading(true);
+    setError('');
+    setNotice('');
+    try {
+      await resetPassword(address);
+      setNotice('Password reset email sent. Check your inbox and spam folder.');
     } catch (err) {
       setError(message(err.code));
     } finally {
@@ -77,6 +94,10 @@ export default function Login() {
           </div>
         </label>
         {error && <div className="error">{error}</div>}
+        {notice && <div className="login-notice">{notice}</div>}
+        <button type="button" className="forgot-password" onClick={forgot} disabled={loading}>
+          Forgot password?
+        </button>
         <button disabled={loading} className="btn primary login-btn">
           {loading ? 'Signing in...' : 'Sign in'}
           <ArrowRight size={18} />

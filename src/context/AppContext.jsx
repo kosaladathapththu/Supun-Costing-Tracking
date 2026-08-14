@@ -1,5 +1,10 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import {
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 import { doc, getDoc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { seed } from '../data/seed';
 import { auth, db, firebaseEnabled } from '../services/firebase';
@@ -129,6 +134,11 @@ export function AppProvider({ children }) {
     return profile(result.user);
   };
 
+  const resetPassword = async email => {
+    if (!firebaseEnabled) throw new Error('Firebase is not configured.');
+    await sendPasswordResetEmail(auth, email);
+  };
+
   const logout = async () => {
     if (firebaseEnabled) await signOut(auth);
     userRef.current = null;
@@ -150,7 +160,7 @@ export function AppProvider({ children }) {
   };
 
   const value = useMemo(
-    () => ({ data, update, user, login, logout, authLoading, syncError }),
+    () => ({ data, update, user, login, logout, resetPassword, authLoading, syncError }),
     [data, user, authLoading, syncError],
   );
   return <C.Provider value={value}>{children}</C.Provider>;

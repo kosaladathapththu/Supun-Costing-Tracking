@@ -982,6 +982,32 @@ tbody tr:hover {
   top: 14px;
   color: #7d8985;
 }
+.forgot-password {
+  display: block;
+  margin: -5px 0 12px auto;
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.forgot-password:hover {
+  text-decoration: underline;
+}
+.forgot-password:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.login-notice {
+  padding: 10px;
+  border-radius: 6px;
+  background: #e6f4ed;
+  color: #176344;
+  font-size: 12px;
+}
 .login-btn {
   height: 47px;
   width: 100%;
