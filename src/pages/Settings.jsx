@@ -38,7 +38,9 @@ export default function Settings() {
       setCreatingUser(false);
     }
   };
-  const isCfo = user?.email?.toLowerCase() === 'cfo@supungroup.lk';
+  const isAdmin = ['cfo@supungroup.lk', 'kosalaathapaththu1234@gmail.com'].includes(
+    user?.email?.toLowerCase(),
+  );
   return (
     <>
       <PageHeader
@@ -47,7 +49,7 @@ export default function Settings() {
         description="Configure master data, access roles and governance."
       />
       <div className="settings-grid">
-        {isCfo && (
+        {isAdmin && (
           <section className="card setting-card user-management">
             <div className="card-title">
               <div>

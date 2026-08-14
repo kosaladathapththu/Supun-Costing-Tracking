@@ -15,6 +15,7 @@ import { app, auth, db, firebaseEnabled } from '../services/firebase';
 
 const C = createContext();
 const STORAGE_KEY = 'supun-costing-data-v1';
+const ADMIN_EMAILS = ['cfo@supungroup.lk', 'kosalaathapaththu1234@gmail.com'];
 const SECTIONS = ['products', 'suppliers', 'categories', 'costTypes', 'costings', 'audit'];
 const productCategories = [
   'Refrigerators',
@@ -52,6 +53,7 @@ const profile = account => ({
   email: account.email,
   role: 'CFO / Admin',
 });
+const isAdministrator = email => ADMIN_EMAILS.includes(email?.toLowerCase());
 
 export function AppProvider({ children }) {
   const [data, setData] = useState(readLocalData);
@@ -85,7 +87,7 @@ export function AppProvider({ children }) {
 
       setAuthLoading(true);
       try {
-        if (account.email?.toLowerCase() !== 'cfo@supungroup.lk') {
+        if (!isAdministrator(account.email)) {
           const userProfile = await getDoc(doc(db, 'users', account.uid));
           if (userProfile.exists()) {
             setUser(current => ({ ...current, ...userProfile.data(), uid: account.uid }));
@@ -125,7 +127,7 @@ export function AppProvider({ children }) {
             error => setSyncError(error.message || 'Unable to synchronize Firebase data.'),
           ),
         );
-        if (account.email?.toLowerCase() === 'cfo@supungroup.lk') {
+        if (isAdministrator(account.email)) {
           stopDataListeners.push(
             onSnapshot(collection(db, 'users'), snapshot => {
               setUsers(snapshot.docs.map(item => ({ id: item.id, ...item.data() })));
@@ -160,8 +162,8 @@ export function AppProvider({ children }) {
   };
 
   const createSystemUser = async ({ name, email, password, role }) => {
-    if (userRef.current?.email?.toLowerCase() !== 'cfo@supungroup.lk') {
-      throw new Error('Only the CFO can create system users.');
+    if (!isAdministrator(userRef.current?.email)) {
+      throw new Error('Only an administrator can create system users.');
     }
     const secondaryApp = initializeApp(app.options, `create-user-${Date.now()}`);
     const secondaryAuth = getAuth(secondaryApp);
